@@ -27,7 +27,9 @@ func (s *Service) AddRecord(ctx context.Context, p Principal, input DailyRecord)
 		input.RecordDate = s.now()
 	}
 	recordDate := input.RecordDate.UTC().Truncate(24 * time.Hour)
-	if !input.WithinFosterPeriod(order) {
+	startDate := order.StartTime.UTC().Truncate(24 * time.Hour)
+	endDate := order.EndTime.UTC().Truncate(24 * time.Hour)
+	if recordDate.Before(startDate) || recordDate.After(endDate) {
 		return DailyRecord{}, fmt.Errorf("%w: record date must be within the foster period", ErrValidation)
 	}
 	now := formatStoredTime(s.now())

@@ -138,13 +138,6 @@ func (r *DailyRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r DailyRecord) WithinFosterPeriod(order FosterOrder) bool {
-	if r.OrderID != order.ID {
-		return false
-	}
-	return true
-}
-
 type Page[T any] struct {
 	List     []T `json:"list"`
 	Total    int `json:"total"`
